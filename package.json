@@ -1,0 +1,22 @@
+{
+  "name": "lifetime-class-booking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eleahloucks/lifetime-class-booking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eleahloucks/lifetime-class-booking/issues"
+  },
+  "homepage": "https://github.com/Eleahloucks/lifetime-class-booking#readme",
+  "dependencies": {
+    "puppeteer": "^19.9.0"
+  }
+}
