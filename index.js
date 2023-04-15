@@ -1,9 +1,11 @@
 //env file contains user and pass
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+
 const puppeteer = require('puppeteer');
 
-const USERNAME = process.env.USERNAME;
-const PASSWORD = process.env.PASSWORD;
+const username = process.env.USERNAME;
+const password = process.env.PASSWORD;
 const LOGIN_URL = 'https://my.lifetime.life/login.html';
 const CLASSLIST_URL = 'https://my.lifetime.life/clubs/co/flatirons/classes.html';
 const BOOKING_URL = 'https://yourgymwebsite.com/booking';
@@ -12,13 +14,18 @@ const BOOKING_URL = 'https://yourgymwebsite.com/booking';
 // Using await inside these async functions ensures that the code inside the functions
 //is executed sequentially, and each step is completed before moving to the next one.
 (async () => {
+  try {
+    // Your main function's code here
+  } catch (error) {
+    console.error('Error in main script:', error);
+  }
   //open browser
   const browser = await puppeteer.launch();
   //opens a new page at the login url
   const page = await browser.newPage();
 
   // Log in
-  await login(page, USERNAME, PASSWORD);
+  await login(page, username, password);
 
   // Navigate to the page with the list of classes
   await goToClassListPage(page);
@@ -48,11 +55,6 @@ async function login(page, username, password) {
     page.waitForNavigation(),
     page.click('#login-btn'),
   ]);
-  // Take a screenshot of the logged-in page
-  await page.screenshot({ path: 'loggedin.png' });
-
-  // Close the browser
-  await browser.close();
 }
 
 async function goToClassListPage(page) {
@@ -62,6 +64,7 @@ async function goToClassListPage(page) {
 async function scrapePickleballClasses(page) {
   // Implement the scraping logic here
   // Return an array of class information, including booking URLs
+  return [];
 }
 
 async function bookClass(page, classInfo) {

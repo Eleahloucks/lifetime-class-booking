@@ -1,11 +1,15 @@
 //env file contains user and pass
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+
 const puppeteer = require('puppeteer');
 
-const USERNAME = process.env.USERNAME;
-const PASSWORD = process.env.PASSWORD;
+const username = process.env.USERNAME;
+const password = process.env.PASSWORD;
+
 
 async function login(page, username, password) {
+  console.log('Username:', username);
   try {
     // Replace with the actual selectors and login URL
     await page.goto('https://my.lifetime.life/login.html');
@@ -26,9 +30,6 @@ async function login(page, username, password) {
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
-    // Call the login function with your credentials
-    const username = 'your_username';
-    const password = 'your_password';
     await login(page, username, password);
 
     // Take a screenshot of the logged-in page
