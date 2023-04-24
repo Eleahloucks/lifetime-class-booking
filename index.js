@@ -11,51 +11,49 @@ const CLASSLIST_URL = 'https://my.lifetime.life/clubs/co/flatirons/classes.html'
 const BOOKING_URL = 'https://yourgymwebsite.com/booking';
 
 
-// Using await inside these async functions ensures that the code inside the functions
-//is executed sequentially, and each step is completed before moving to the next one.
-(async () => {
+
+(async function() => {
   try {
     // Your main function's code here
+    // Open browser
+    const browser = await puppeteer.launch();
+    // Opens a new page at the login url
+    const page = await browser.newPage();
+
+    // Log in
+    await login(page, username, password);
+
+    // Navigate to the page with the list of classes
+    await goToClassListPage(page);
+
+    // Scrape available Pickleball classes
+    const pickleballClasses = await scrapePickleballClasses(page);
+
+    // Book each class
+    for (const classInfo of pickleballClasses) {
+      await bookClass(page, classInfo);
+    }
+
+    // Close the browser
+    await browser.close();
   } catch (error) {
     console.error('Error in main script:', error);
   }
-  //open browser
-  const browser = await puppeteer.launch();
-  //opens a new page at the login url
-  const page = await browser.newPage();
-
-  // Log in
-  await login(page, username, password);
-
-  // Navigate to the page with the list of classes
-  await goToClassListPage(page);
-
-  // Scrape available Pickleball classes
-  const pickleballClasses = await scrapePickleballClasses(page);
-
-  // Book each class
-  for (const classInfo of pickleballClasses) {
-    await bookClass(page, classInfo);
-  }
-
-  // Close the browser
-  await browser.close();
 })();
 
+
 async function login(page, username, password) {
-  // Navigate to the login page
-  await page.goto(LOGIN_URL);
-
-  // Fill in the username and password fields
-  await page.type('#account-username', username);
-  await page.type('#account-password', password);
-
-  // Click the login button and wait for navigation
-  await Promise.all([
-    page.waitForNavigation(),
-    page.click('#login-btn'),
-  ]);
+  try {
+    await page.goto(LOGIN_URL);
+    await page.type('#account-username', username);
+    await page.type('#account-password', password);
+    await page.click('#login-btn');
+    await page.waitForNavigation();
+  } catch (error) {
+    console.error('Error during login:', error);
+  }
 }
+
 
 async function goToClassListPage(page) {
   try {
@@ -78,3 +76,6 @@ async function scrapePickleballClasses(page) {
 async function bookClass(page, classInfo) {
   // Implement the class booking logic here
 }
+
+//export function for test.js
+module.exports = { login, LOGIN_URL };
