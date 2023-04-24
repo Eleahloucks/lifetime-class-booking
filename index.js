@@ -58,7 +58,15 @@ async function login(page, username, password) {
 }
 
 async function goToClassListPage(page) {
-  // Implement the navigation logic here
+  try {
+    await page.goto(CLASSLIST_URL);
+    // may need to wait for some specific element to load before you start scraping.
+    // If that's the case, you can use page.waitForSelector() function.
+    // Example:
+    // await page.waitForSelector('.class-list-selector');
+  } catch (error) {
+    console.error('Error in goToClassListPage function:', error);
+  }
 }
 
 async function scrapePickleballClasses(page) {

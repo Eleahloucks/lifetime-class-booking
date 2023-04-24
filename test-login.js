@@ -6,7 +6,28 @@ const puppeteer = require('puppeteer');
 
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
+const CLASSLIST_URL = 'https://my.lifetime.life/clubs/co/flatirons/classes.html';
 
+
+
+
+
+(async () => {
+  const browser = await puppeteer.launch({ headless: false }); // Set headless to false to see the browser actions
+  const page = await browser.newPage();
+
+  // Log in
+  await login(page, username, password);
+
+  // Navigate to the page with the list of classes
+  await goToClassListPage(page);
+
+  // You can comment out the rest of the script for testing purposes
+  // ...
+
+  // Close the browser
+  await browser.close();
+})();
 
 async function login(page, username, password) {
   console.log('Username:', username);
@@ -24,20 +45,19 @@ async function login(page, username, password) {
   }
 }
 
-(async () => {
+async function goToClassListPage(page) {
   try {
-    // Launch the browser and create a new page
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
+    await page.goto(CLASSLIST_URL);
+    // Wait for a specific element that signifies the page has loaded, e.g. a class list container
+    await page.waitForSelector('.schedules-component-container');
 
-    await login(page, username, password);
+    // Take a screenshot of the class list page for testing purposes
+    await page.screenshot({ path: 'classListPage.png' });
 
-    // Take a screenshot of the logged-in page
-    await page.screenshot({ path: 'loggedin.png' });
-
-    // Close the browser
-    await browser.close();
+    // You can also log a message to the console to confirm that the function worked
+    console.log('Navigated to class list page successfully');
   } catch (error) {
-    console.error('Error in main script:', error);
+    console.error('Error in goToClassListPage function:', error);
   }
-})();
+}
+
