@@ -12,7 +12,7 @@ const BOOKING_URL = 'https://yourgymwebsite.com/booking';
 
 
 
-(async function() => {
+(async () => {
   try {
     // Your main function's code here
     // Open browser
