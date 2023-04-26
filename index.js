@@ -15,6 +15,7 @@ const BOOKING_URL = 'https://yourgymwebsite.com/booking';
 (async () => {
   try {
     // Your main function's code here
+    const keywords = ['Pickleball'];
     // Open browser
     const browser = await puppeteer.launch({ headless: false });
     // Opens a new page at the login url
@@ -27,7 +28,7 @@ const BOOKING_URL = 'https://yourgymwebsite.com/booking';
     await goToClassListPage(page);
 
     // Scrape available Pickleball classes
-    const pickleballClasses = await scrapePickleballClasses(page);
+    const classes = await scrapePickleballClasses(page, keywords);;
 
     // Book each class
     for (const classInfo of pickleballClasses) {
@@ -74,7 +75,7 @@ async function goToClassListPage(page) {
 async function scrapePickleballClasses(page, keywords) {
   try {
     // Wait for the schedule table or list to load
-    await page.waitForSelector('.schedule-row');
+    await page.waitForSelector('.schedules-component-container');
 
     // Scrape the schedule data and find classes with the specified keywords in the title
     const classes = await page.evaluate((keywords) => {
